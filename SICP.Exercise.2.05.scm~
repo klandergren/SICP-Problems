@@ -1,0 +1,55 @@
+;;; Exercise 2.05
+
+
+(define (exp base power result)
+  (if (= 0 power)
+      result
+      (exp base (- power 1) (* base result))))
+
+;quick test
+(exp 2 3 1)  ;passed
+
+(define (is-base-two? x)
+  (if ()))
+
+(get-base-two 8)
+
+(define (get-base-two x)
+  (define (iter num counter)
+    (if (= num 1)
+        counter
+        (iter (/ num 2) (+ counter 1))))
+  (iter x 0))
+
+;quick test
+(get-base-two 8)  ;passed
+
+
+(define (get-base-three x)
+  (define (iter num counter)
+    (if (= num 1)
+        counter
+        (iter (/ num 3) (+ counter 1))))
+  (iter x 0))
+
+;quick test
+(get-base-three 9)  ;passed
+
+(define (cons a b)
+  (* (exp 2 a 1)
+     (exp 3 b 1)))
+
+(define (car x)
+  (if (even? x)
+      (get-base-two x)
+      (car (/ x 3))))
+
+(define (cdr x)
+  (if (odd? x)
+      (get-base-three x)
+      (cdr (/ x 2))))
+
+;test
+(cons 2 2)   ;expecting 36, got 36
+(car 36)
+(cdr 36)

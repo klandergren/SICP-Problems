@@ -1,0 +1,40 @@
+;;; Exercise 2.29
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define (left-branch structure)
+  (car structure))
+
+(define (right-branch structure)
+  (cdr structure))
+
+(define (branch-length branch)
+  (car branch))
+
+(define (branch-structure branch)
+  (cdr branch))
+
+(define (total-weight mobile)
+  (cond ((null? mobile) 0)
+        ((not (pair? (car mobile))) (car (branch-structure mobile)))
+        (else (+ (total-weight (left-branch mobile))
+                 (total-weight (right-branch mobile))))))
+
+
+(define moby1
+  (make-mobile (make-branch 1 4)
+               (make-branch 2 2)))
+
+(define moby2
+  (make-mobile (make-branch 3 6)
+               moby1))
+
+moby1
+moby2
+
+(total-weight moby1)   ;6 correct
+(total-weight moby2)   ;12 correct

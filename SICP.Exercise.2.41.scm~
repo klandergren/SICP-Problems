@@ -1,0 +1,13 @@
+;;; Exercise 2.41
+
+(define (ordered-triples n)
+  (map (lambda (i)
+         (map (lambda (j)
+                (map (lambda (k)
+                       (list k j i))
+                     (enumerate-interval 1 (- j 1))))
+              (enumerate-interval 1 (- i 1))))
+       (enumerate-interval 1 n)))
+
+;testing
+(ordered-triples 5)

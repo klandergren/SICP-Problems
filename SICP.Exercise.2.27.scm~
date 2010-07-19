@@ -1,0 +1,88 @@
+;;; Exercise 2.27
+
+(define x (list (list 1 2) (list 3 4)))
+
+(define t1 (list 1 2))            ;(1 2)
+(define t2 (list 1 2 3))          ;(1 2 3)
+(define t3 (list 1 (list 2 3)))   ;(1 (2 3))
+(define t4 (list (list 3 4)))     ;((3 4))
+
+;starting from scratch to make sure I know it cold
+(define (reverse x)
+  (define (iter x newlist)
+    (if (null? x)
+        newlist
+        (iter (cdr x) (cons (car x) newlist))))
+  (iter x (list)))
+
+(reverse t1)
+
+(define (reverse-deep x)
+  (if (pair? x)
+      (reverse-deep x)
+      x))
+
+(reverse t4)
+(reverse-deep t4)
+
+(+ 3 4)
+
+(define (reverse-deep x)
+  (define (iter x newlist)
+    (cond ((null? x) newlist)
+          ((not (pair? x)) x)
+          (else iter (cdr x) (cons (car x)
+                                   newlist))))
+  (iter x (list)))
+
+(define (reverse-deep x)
+  (cond ((null? x) (list))
+        ((pair? x) x)
+        (cons (reverse-deep (cdr x))
+              (reverse-deep (car x)))))
+
+(define (count-leaves x)
+  (cond ((null? x) 0)
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves (car x))
+                 (count-leaves (cdr x))))))
+
+
+(count-leaves t4)
+
+(pair? (cdr (cdr (list 2 3))))
+
+;testing, testing
+(cdr t1)                        ;(2)
+(car t1)                        ; 1
+(car t2)                        ; 1
+(cdr t2)                        ;(2 3)
+(car t3)                        ; 1
+(cdr t3)                        ;((2 3))
+(car t4)                        ;(3 4)
+(cdr t4)                        ;()
+
+(pair? (cdr t3))                ;t
+(pair? (car t3))                ;f
+
+(cons (car t1) (list))          ;(1)
+
+(cddr t3)                       ;()
+(cadr t3)                       ;(2 3)
+
+(reverse-deep t1)
+(reverse-deep t2)
+(reverse-deep t3)
+(reverse-deep t4)
+
+(car (reverse-deep t4))
+(cdr (reverse-deep t4))
+
+(pair? (cdr t4))         ;f
+(pair (
+
+(cons (cons 1
+            (cons 2 3))
+      4)
+
+(car (car (cons (list 1) (list 3 5))))

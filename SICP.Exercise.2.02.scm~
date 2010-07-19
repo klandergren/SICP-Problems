@@ -1,0 +1,45 @@
+;;; Exercise 2.02
+
+;constructors
+(define (make-segment x1 y1 x2 y2)
+  (cons (make-point x1 y1)
+        (make-point x2 y2)))
+(define (make-point x y)
+  (cons x y))
+
+;selectors
+(define (start-segment line)
+  (car line))
+(define (end-segment line)
+  (cdr line))
+(define (x-point p)
+  (car p))
+(define (y-point p)
+  (cdr p))
+
+;procedures
+
+;takes a line segment as arg
+(define (midpoint-segment seg)
+  (let ((mx (/ (+ (x-point (start-segment seg))
+                  (x-point (end-segment seg)))
+               2))
+        (my (/ (+ (y-point (start-segment seg))
+                  (y-point (end-segment seg)))
+               2)))
+    (let ((p (make-point mx my)))
+      (print-point p))))
+
+(define (print-point p)
+  (newline)
+  (display "(")
+  (display (x-point p))
+  (display ",")
+  (display (y-point p))
+  (display ")"))
+
+(define mine (make-segment 0 1 1 0))
+
+(midpoint-segment mine) ;;yeahhh buddyy
+
+         

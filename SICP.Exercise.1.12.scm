@@ -1,0 +1,65 @@
+;;; Exercise 1.12
+
+; Note: After many iterations, I believe the code
+;       below works properly but could be smaller
+
+; Question: Should I comment before, after, or inline?
+;           I feel like I interchange.
+
+; Pascal's triangle up to position 14
+; 1
+; 1 1
+; 1 2 1
+; 1 3 3 1
+; 1 4 6 4 1
+
+; variable 'position' example triangle:
+;  0
+;  1  2
+;  3  4  5
+;  6  7  8  9
+; 10 11 12 13 14
+
+; position 0 has value 1
+; position 4 has value 2
+; etc etc
+
+;; return the starting _position_ value of a given layer
+(define (return-layer-starter layer)
+  (if (<= layer 0)
+      0
+      (+ layer (return-layer-starter (- layer 1)))))
+
+;; return the bin (column) of a position p on layer l
+(define (get-bin p l)
+  (- p (return-layer-starter l)))
+
+
+; Returns the layer a position is on
+; given a seed value of layer=0 (i.e. (get-layer position 0))
+(define (get-layer position layer)
+  (if (< (- position (+ layer 1)) 0)
+      layer
+      (get-layer (- position (+ layer 1)) (+ layer 1))))
+  
+(define (value-iter layer bin)
+  (cond ((= 0 bin) 1)
+        ((= layer bin) 1)
+        (else (+ (value-iter (- layer 1) (- bin 1))
+                 (value-iter (- layer 1) bin)))))
+
+(define (pascal position)
+  (value-iter (get-layer position 0) (get-bin position (get-layer position 0))))
+
+
+;testing
+(pascal 0)
+(pascal 1)
+(pascal 2)
+(pascal 3)
+(pascal 4)
+
+(pascal 14)
+(pascal 15)
+(pascal 16)
+(pascal 17)

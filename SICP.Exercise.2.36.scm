@@ -1,0 +1,104 @@
+;;; Exercise 2.36
+
+;big question: is there a way to call lambda recursively
+;so as to not have to define try1 outside of procedure?
+
+(define nil (list))
+
+;test values
+(define s (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+(define t1 (list 1 2 3 4))
+s
+;procedures
+
+(define (try1 s)
+  (if (not (null? s))
+      (cons (caar s)
+            (try1 (cdr s)))
+      nil))
+
+(define (try2 s)
+  (if (not (null? s))
+      (cons (cdar s)
+            (try2 (cdr s)))
+      nil))
+
+(define (map proc items)
+  (if (null? items)
+      nil
+      (cons (proc (car items))
+            (map proc (cdr items)))))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (try1 seqs))    ;makes list (L1A1, L2A1, etc)
+            (accumulate-n op init (try2 seqs)))))
+
+
+;testing
+(accumulate-n + 0 s)
+
+(try1 (try2 s))
+(try1 (try2 (try2 s)))
+(car (try2 (try2 (try2 s))))
+(try1 (try2 (try2 (try2 s))))
+
+(try2 (try2 (try2 s)))
+(car (try2 (try2 (try2 s))))
+(try1 (try2 (try2 s)))
+(try1 (try2 (try2 (try2 s))))
+
+(accumulate + 0 (try1 (try2 (try2 s))))  ;s at this point is (try2 (try2 s))
+(accumulate-n + 0 (try2 (try2 (try2 s)))) ;this returns correctly! huh...
+(cons 22 (cons 26 (cons 30 nil)))  ;this should be what's happening
+
+(cons (accumulate + 0 (try1 (try2 (try2 s))))
+      (accumulate-n + 0 (try2 (try2 (try2 s)))))
+
+
+(cons (accumulate + 0 (try1 (try2 s)))
+      (cons (accumulate + 0 (try1 (try2 (try2 s))))
+            (accumulate-n + 0 (try2 (try2 (try2 s))))))
+
+(cons (accumulate + 0 (try1 s))
+      (cons (accumulate + 0 (try1 (try2 s)))
+            (cons (accumulate + 0 (try1 (try2 (try2 s))))
+                  (accumulate-n + 0 (try2 (try2 (try2 s)))))))
+
+
+(car (try2 (try2 (try2 s))))   ;this is the test that should be happening
+
+s          ;
+(car s)    ;(1 2 3)
+(cadddr s)
+(cons (+ 1 3) (+ 2 4))  ;(4 . 6)
+(cons (list 1 3) (cons (list 2 4) (list 5 6)))
+(accumulate + 0 s)
+
+(accumulate + 0 t1)
+
+(caar s)
+(caadr s)
+(caaddr s)
+
+(cdar s)
+(cdadr s)
+(cdaddr s)
+(cdadddr s)
+
+(try2 s)
+
+(define  s)
+  (if (not (null? s))
+      (cons (caar s)
+            (try1 (cdr s)))
+      nil))
+
+(try1 s)   ;works

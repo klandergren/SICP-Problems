@@ -1,0 +1,67 @@
+;;; Exercise 2.42
+
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size))
+
+
+;testing
+
+(define (map proc items)
+  (if (null? items)
+      nil
+      (cons (proc (car items))
+            (map proc (cdr items)))))
+
+
+(map (lambda (i)
+       (map (lambda (j) (list i j))
+            (enumerate-interval 1 (- i 1))))
+     (enumerate-interval 1 3))
+
+(flatmap (lambda (i)
+       (map (lambda (j) (list i j))
+            (enumerate-interval 1 (- i 1))))
+     (enumerate-interval 1 5))
+
+
+(car (enumerate-interval 1 1))
+
+(car (list 2 '()))
+
+(cons (list 2 1) '())
+(cons (list 3 2)
+      (cons (list 3 1)
+            '()))
+(cons (list 'i 1)
+      (cons (list 'i 2)
+            '()))
+(car (cons (list 'i 1)
+      (cons (list 'i 2)
+            '())))
+
+(define output1
+  (cons (enumerate-interval 1 0)
+      (cons (enumerate-interval 1 1)
+            (enumerate-interval 1 2))))
+
+(caddr output1)
+
+(define output2
+  (cons (list 'i '())
+      (cons (list 'i (list 1))
+            (cons (list 'i 1)
+                  (cons (list 'i (list 2))
+                        '())))))
+
+(enumerate-interval 1 3)
